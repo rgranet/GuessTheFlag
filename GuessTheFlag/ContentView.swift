@@ -9,12 +9,15 @@ import SwiftUI
 
 struct FlagImage : View {
     var flag : Image
+    @State private var amountRotation = 0.0
+    
     
     var body: some View{
         flag
             .renderingMode(.original)
             .clipShape(Capsule())
             .shadow(radius: 5)
+            .rotation3DEffect(.degrees(amountRotation), axis: (x: 0, y: 1, z: 0))
     }
 }
 
@@ -26,13 +29,14 @@ struct ContentView: View {
     @State private var score = 0
     @State private var endGame = false
     @State private var numberOfQuestion = 0
+    @State private var amountRotation = 0.0
     
     var body: some View {
         ZStack {
-//            LinearGradient(gradient: Gradient(colors: [.blue, .black]), startPoint: .top, endPoint: .bottom)
+            //            LinearGradient(gradient: Gradient(colors: [.blue, .black]), startPoint: .top, endPoint: .bottom)
             RadialGradient(stops: [.init(color:Color(red: 0.1, green: 0.2, blue: 0.5), location: 0.3),
                                    .init(color:Color(red: 0.76, green: 0.15, blue: 0.26), location: 0.3)], center: .top, startRadius: 200, endRadius: 400)
-                .ignoresSafeArea()
+            .ignoresSafeArea()
             
             VStack {
                 Spacer()
@@ -44,6 +48,7 @@ struct ContentView: View {
                 VStack(spacing: 15) {
                     
                     VStack{
+                        
                         Text("Tap the flag of ")
                             .foregroundStyle(.secondary)
                             .font(.subheadline.weight(.heavy))
@@ -65,7 +70,7 @@ struct ContentView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
                 .background(.regularMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
                 
                 Spacer()
                 Spacer()
@@ -96,7 +101,7 @@ struct ContentView: View {
         switch numberOfQuestion {
         case maxQuestions: endGame = true
             scoreTitle = "This is the end of the game"
-        
+            
         default:  if number == correctAnswer {
             scoreTitle = "Correct"
             score += 1
@@ -105,8 +110,7 @@ struct ContentView: View {
             scoreTitle = "Wrong! \nThis is the flag of \(countries[number])"
             numberOfQuestion += 1
         }
-        
-        showingScore = true
+            showingScore = true
         }
         
     }
